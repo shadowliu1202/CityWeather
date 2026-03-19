@@ -1,4 +1,4 @@
-package com.weather.feature.weather.presentation.components
+package com.weather.feature.weather.presentation.today
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,17 +21,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.weather.core.model.Weather
+import com.weather.core.model.CurrentWeather
+import com.weather.core.model.WeatherCondition
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
+import com.weather.core.ui.theme.WeatherTheme
+import java.time.Instant
 
 @Composable
-fun WeatherStatsRow(
-    weather: Weather,
+internal fun WeatherStatsRow(
+    weather: CurrentWeather,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -96,7 +100,8 @@ fun WeatherStatCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 12.dp, vertical = 14.dp),
+                .padding(horizontal = 12.dp, vertical = 14.dp)
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -116,5 +121,41 @@ fun WeatherStatCard(
                 fontWeight = FontWeight.SemiBold
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun WeatherStatCardPreview() {
+    WeatherTheme {
+        WeatherStatCard(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.DeviceThermostat,
+                    contentDescription = "Feels Like",
+                    tint = WeatherAccentBlue,
+                    modifier = Modifier.size(22.dp)
+                )
+            },
+            label = "Feels Like",
+            value = "24°C"
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun WeatherStatsRowPreview() {
+    WeatherTheme {
+        val sampleWeather = CurrentWeather(
+            cityName = "San Francisco",
+            date = Instant.now(),
+            temperatureCelsius = 22,
+            condition = WeatherCondition.SUNNY,
+            feelsLikeCelsius = 24,
+            humidityPercent = 65,
+            windSpeedKmh = 10,
+        )
+        WeatherStatsRow(weather = sampleWeather)
     }
 }

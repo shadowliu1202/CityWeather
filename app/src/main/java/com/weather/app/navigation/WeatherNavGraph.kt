@@ -23,9 +23,7 @@ fun WeatherNavGraph(
             }
         )
         cityScreen(
-            onNavigateBack = {
-                navController.popBackStack()
-            },
+            onNavigateBack = navController::popBackStack,
             onCitySelected = { city ->
                 navController.navigate(WeatherScreen(city)) {
                     popUpTo(WeatherScreen::class) {

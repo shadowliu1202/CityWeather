@@ -1,5 +1,6 @@
 package com.weather.feature.weather.infra.remote
 
+import com.weather.core.model.CurrentWeather
 import com.weather.core.model.DailyForecast
 import com.weather.core.model.HourlyForecast
 import com.weather.core.model.Weather
@@ -9,8 +10,6 @@ import com.weather.feature.weather.infra.remote.dto.ForecastItemDto
 import com.weather.feature.weather.infra.remote.dto.ForecastResponseDto
 import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -20,16 +19,22 @@ internal class Mapper {
         forecast: ForecastResponseDto
     ): Weather {
         return Weather(
+            current = mapCurrentWeather(current),
+            hourlyForecasts = mapHourly(forecast.list.take(8)),
+            weeklyForecasts = mapWeekly(forecast.list)
+        )
+    }
+
+    private fun mapCurrentWeather(current: CurrentWeatherDto): CurrentWeather {
+        return CurrentWeather(
             cityName = current.name,
-            date = formatDate(current.dt),
+            date = Instant.ofEpochSecond(current.dt),
             temperatureCelsius = current.main.temp.toInt(),
             condition = mapCondition(current.weather.firstOrNull()?.id ?: 800),
             feelsLikeCelsius = current.main.feelsLike.toInt(),
             humidityPercent = current.main.humidity,
             // OpenWeatherMap returns wind speed in m/s → convert to km/h
             windSpeedKmh = (current.wind.speed * 3.6).toInt(),
-            hourlyForecasts = mapHourly(forecast.list.take(8)),
-            weeklyForecasts = mapWeekly(forecast.list)
         )
     }
 
@@ -83,14 +88,6 @@ internal class Mapper {
     }
 
     // ── Formatting helpers ────────────────────────────────────────────────────
-
-    /** Unix epoch seconds → "Monday, 12 Oct" */
-    private fun formatDate(unixSeconds: Long): String {
-        val formatter = DateTimeFormatter.ofPattern("EEEE, d MMM", Locale.ENGLISH)
-        return Instant.ofEpochSecond(unixSeconds)
-            .atZone(ZoneId.systemDefault())
-            .format(formatter)
-    }
 
     /** "2024-10-12 14:00:00" → "14:00" */
     private fun formatHour(dtTxt: String): String = dtTxt.substring(11, 16)

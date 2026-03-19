@@ -1,15 +1,22 @@
 package com.weather.core.model
 
+import java.time.Instant
+
+
 data class Weather(
+    val current: CurrentWeather,
+    val hourlyForecasts: List<HourlyForecast>,
+    val weeklyForecasts: List<DailyForecast>
+)
+
+data class CurrentWeather(
     val cityName: String,
-    val date: String,
+    val date: Instant,
     val temperatureCelsius: Int,
     val condition: WeatherCondition,
     val feelsLikeCelsius: Int,
     val humidityPercent: Int,
     val windSpeedKmh: Int,
-    val hourlyForecasts: List<HourlyForecast>,
-    val weeklyForecasts: List<DailyForecast>
 )
 
 data class HourlyForecast(

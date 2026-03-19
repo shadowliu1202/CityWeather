@@ -2,8 +2,8 @@ package com.weather.feature.weather.di
 
 import com.weather.feature.weather.BuildConfig
 import com.weather.feature.weather.domain.WeatherRepository
+import com.weather.feature.weather.infra.adapter.OpenWeatherMapWeatherRepository
 import com.weather.feature.weather.infra.remote.OpenWeatherMapService
-import com.weather.feature.weather.infra.remote.OpenWeatherMapWeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -16,7 +16,7 @@ import com.weather.core.ui.theme.WeatherRainBlue
 import com.weather.core.ui.theme.WeatherSunYellow
 import com.weather.core.ui.theme.WeatherTextSecondary
 
-fun WeatherCondition.weatherIcon(): ImageVector {
+internal fun WeatherCondition.weatherIcon(): ImageVector {
     return when (this) {
         WeatherCondition.SUNNY -> Icons.Default.WbSunny
         WeatherCondition.CLOUDY -> Icons.Default.Cloud
@@ -29,7 +29,7 @@ fun WeatherCondition.weatherIcon(): ImageVector {
     }
 }
 
-fun WeatherCondition.weatherIconTint(): Color {
+internal fun WeatherCondition.weatherIconTint(): Color {
     return when (this) {
         WeatherCondition.SUNNY -> WeatherSunYellow
         WeatherCondition.CLOUDY -> WeatherTextSecondary

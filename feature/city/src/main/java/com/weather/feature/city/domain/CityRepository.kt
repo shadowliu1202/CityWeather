@@ -1,4 +1,4 @@
-package com.weather.core.data.repository
+package com.weather.feature.city.domain
 
 import com.weather.core.model.City
 import kotlinx.coroutines.flow.Flow

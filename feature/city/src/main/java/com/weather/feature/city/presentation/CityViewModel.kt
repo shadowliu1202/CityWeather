@@ -1,8 +1,8 @@
-package com.weather.feature.city
+package com.weather.feature.city.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weather.core.data.repository.CityRepository
+import com.weather.feature.city.domain.CityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

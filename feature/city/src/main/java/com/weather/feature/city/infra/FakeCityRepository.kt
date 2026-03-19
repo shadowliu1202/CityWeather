@@ -1,11 +1,12 @@
-package com.weather.core.data.repository
+package com.weather.feature.city.infra
 
 import com.weather.core.model.City
+import com.weather.feature.city.domain.CityRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
-class FakeCityRepository @Inject constructor() : CityRepository {
+internal class FakeCityRepository @Inject constructor() : CityRepository {
 
     private val cities = listOf(
         City(

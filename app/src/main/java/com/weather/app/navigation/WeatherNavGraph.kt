@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.weather.feature.city.CityScreen
-import com.weather.feature.weather.WeatherScreen
+import com.weather.feature.city.presentation.CityScreen
+import com.weather.feature.weather.presentation.WeatherScreen
 
 sealed class Screen(val route: String) {
     data object Weather : Screen("weather/{cityId}") {

@@ -1,4 +1,4 @@
-package com.weather.feature.weather.components
+package com.weather.feature.weather.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,17 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.weather.core.model.HourlyForecast
+import com.weather.core.model.DailyForecast
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherCardSelected
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
-import com.weather.feature.weather.util.weatherIcon
-import com.weather.feature.weather.util.weatherIconTint
+import com.weather.feature.weather.presentation.util.weatherIcon
+import com.weather.feature.weather.presentation.util.weatherIconTint
 
 @Composable
-fun HourlyForecastRow(
-    hourlyForecasts: List<HourlyForecast>,
+fun WeeklyForecastSection(
+    weeklyForecasts: List<DailyForecast>,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -39,26 +39,26 @@ fun HourlyForecastRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp)
     ) {
-        items(hourlyForecasts) { forecast ->
-            HourlyForecastCard(
+        items(weeklyForecasts) { forecast ->
+            DailyForecastCard(
                 forecast = forecast,
-                isNow = forecast.time == "Now"
+                isToday = forecast.dayOfWeek == "TODAY"
             )
         }
     }
 }
 
 @Composable
-fun HourlyForecastCard(
-    forecast: HourlyForecast,
-    isNow: Boolean,
+fun DailyForecastCard(
+    forecast: DailyForecast,
+    isToday: Boolean,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.width(68.dp),
+        modifier = modifier.width(80.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isNow) WeatherCardSelected else WeatherCardBackground
+            containerColor = if (isToday) WeatherCardSelected else WeatherCardBackground
         )
     ) {
         Column(
@@ -67,24 +67,30 @@ fun HourlyForecastCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = forecast.time,
-                color = if (isNow) WeatherTextPrimary else WeatherTextSecondary,
-                fontSize = 12.sp,
-                fontWeight = if (isNow) FontWeight.SemiBold else FontWeight.Normal
+                text = forecast.dayOfWeek,
+                color = if (isToday) WeatherTextPrimary else WeatherTextSecondary,
+                fontSize = 11.sp,
+                fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(8.dp))
             Icon(
                 imageVector = forecast.condition.weatherIcon(),
                 contentDescription = forecast.condition.label,
                 tint = forecast.condition.weatherIconTint(),
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(26.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "${forecast.temperatureCelsius}°",
+                text = "${forecast.highCelsius}°",
                 color = WeatherTextPrimary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "${forecast.lowCelsius}°",
+                color = WeatherTextSecondary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal
             )
         }
     }

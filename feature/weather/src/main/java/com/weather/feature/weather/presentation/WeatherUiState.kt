@@ -1,4 +1,4 @@
-package com.weather.feature.weather
+package com.weather.feature.weather.presentation
 
 import com.weather.core.model.Weather
 

@@ -1,4 +1,4 @@
-package com.weather.feature.weather
+package com.weather.feature.weather.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,14 +44,13 @@ import com.weather.core.model.Weather
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherDarkBackground
-import com.weather.core.ui.theme.WeatherSunYellow
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
-import com.weather.feature.weather.components.HourlyForecastRow
-import com.weather.feature.weather.components.WeatherStatsRow
-import com.weather.feature.weather.components.WeeklyForecastSection
-import com.weather.feature.weather.util.weatherIcon
-import com.weather.feature.weather.util.weatherIconTint
+import com.weather.feature.weather.presentation.components.HourlyForecastRow
+import com.weather.feature.weather.presentation.components.WeatherStatsRow
+import com.weather.feature.weather.presentation.components.WeeklyForecastSection
+import com.weather.feature.weather.presentation.util.weatherIcon
+import com.weather.feature.weather.presentation.util.weatherIconTint
 
 @Composable
 fun WeatherScreen(

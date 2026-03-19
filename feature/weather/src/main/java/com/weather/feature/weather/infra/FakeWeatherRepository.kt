@@ -1,9 +1,10 @@
-package com.weather.core.data.repository
+package com.weather.feature.weather.infra
 
 import com.weather.core.model.DailyForecast
 import com.weather.core.model.HourlyForecast
 import com.weather.core.model.Weather
 import com.weather.core.model.WeatherCondition
+import com.weather.feature.weather.domain.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject

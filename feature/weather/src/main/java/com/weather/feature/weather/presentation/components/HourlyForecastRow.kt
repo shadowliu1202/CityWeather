@@ -1,11 +1,9 @@
-package com.weather.feature.weather.components
+package com.weather.feature.weather.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,17 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.weather.core.model.DailyForecast
+import com.weather.core.model.HourlyForecast
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherCardSelected
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
-import com.weather.feature.weather.util.weatherIcon
-import com.weather.feature.weather.util.weatherIconTint
+import com.weather.feature.weather.presentation.util.weatherIcon
+import com.weather.feature.weather.presentation.util.weatherIconTint
 
 @Composable
-fun WeeklyForecastSection(
-    weeklyForecasts: List<DailyForecast>,
+fun HourlyForecastRow(
+    hourlyForecasts: List<HourlyForecast>,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -41,26 +39,26 @@ fun WeeklyForecastSection(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp)
     ) {
-        items(weeklyForecasts) { forecast ->
-            DailyForecastCard(
+        items(hourlyForecasts) { forecast ->
+            HourlyForecastCard(
                 forecast = forecast,
-                isToday = forecast.dayOfWeek == "TODAY"
+                isNow = forecast.time == "Now"
             )
         }
     }
 }
 
 @Composable
-fun DailyForecastCard(
-    forecast: DailyForecast,
-    isToday: Boolean,
+fun HourlyForecastCard(
+    forecast: HourlyForecast,
+    isNow: Boolean,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.width(80.dp),
+        modifier = modifier.width(68.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isToday) WeatherCardSelected else WeatherCardBackground
+            containerColor = if (isNow) WeatherCardSelected else WeatherCardBackground
         )
     ) {
         Column(
@@ -69,30 +67,24 @@ fun DailyForecastCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = forecast.dayOfWeek,
-                color = if (isToday) WeatherTextPrimary else WeatherTextSecondary,
-                fontSize = 11.sp,
-                fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal
+                text = forecast.time,
+                color = if (isNow) WeatherTextPrimary else WeatherTextSecondary,
+                fontSize = 12.sp,
+                fontWeight = if (isNow) FontWeight.SemiBold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(8.dp))
             Icon(
                 imageVector = forecast.condition.weatherIcon(),
                 contentDescription = forecast.condition.label,
                 tint = forecast.condition.weatherIconTint(),
-                modifier = Modifier.size(26.dp)
+                modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "${forecast.highCelsius}°",
+                text = "${forecast.temperatureCelsius}°",
                 color = WeatherTextPrimary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "${forecast.lowCelsius}°",
-                color = WeatherTextSecondary,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Normal
             )
         }
     }

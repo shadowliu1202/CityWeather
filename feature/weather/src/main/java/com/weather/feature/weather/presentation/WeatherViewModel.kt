@@ -1,9 +1,9 @@
-package com.weather.feature.weather
+package com.weather.feature.weather.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weather.core.data.repository.WeatherRepository
+import com.weather.feature.weather.domain.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

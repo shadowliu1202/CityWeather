@@ -1,4 +1,4 @@
-package com.weather.feature.city
+package com.weather.feature.city.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -212,6 +213,20 @@ fun CityScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewCityListItem() {
+    CityListItem(
+        city = City(
+            id = "quidam",
+            name = "Jewel Mathis",
+            country = "Kyrgyzstan",
+            latitude = 4.5,
+            longitude = 6.7
+        )
+    ) { }
 }
 
 @Composable

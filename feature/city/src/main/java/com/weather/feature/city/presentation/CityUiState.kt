@@ -1,4 +1,4 @@
-package com.weather.feature.city
+package com.weather.feature.city.presentation
 
 import com.weather.core.model.City
 

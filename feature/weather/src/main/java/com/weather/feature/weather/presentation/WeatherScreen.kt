@@ -1,5 +1,7 @@
 package com.weather.feature.weather.presentation
 
+import android.net.Uri
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +42,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.weather.core.model.City
 import com.weather.core.model.Weather
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherCardBackground
@@ -51,15 +58,51 @@ import com.weather.feature.weather.presentation.components.WeatherStatsRow
 import com.weather.feature.weather.presentation.components.WeeklyForecastSection
 import com.weather.feature.weather.presentation.util.weatherIcon
 import com.weather.feature.weather.presentation.util.weatherIconTint
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlin.reflect.typeOf
+
+
+private val CityNavType = object : NavType<City>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): City? {
+        return bundle.getString(key)?.let { Json.decodeFromString(it) }
+    }
+
+    override fun parseValue(value: String): City {
+        return Json.decodeFromString(Uri.decode(value))
+    }
+
+    override fun serializeAsValue(value: City): String {
+        return Uri.encode(Json.encodeToString(value))
+    }
+
+    override fun put(bundle: Bundle, key: String, value: City) {
+        bundle.putString(key, Json.encodeToString(value))
+    }
+}
+
+fun NavGraphBuilder.weatherScreen(
+    onNavigateToCitySearch: () -> Unit,
+) {
+    composable<WeatherScreen>(
+        typeMap = mapOf(typeOf<City>() to CityNavType)
+    ) { backStackEntry ->
+        val route: WeatherScreen = backStackEntry.toRoute()
+        WeatherScreen(city = route.city, onNavigateToCitySearch = onNavigateToCitySearch)
+    }
+}
+
+@Serializable
+data class WeatherScreen(val city: City = City.Default)
 
 @Composable
-fun WeatherScreen(
-    cityId: String,
+private fun WeatherScreen(
+    city: City,
     onNavigateToCitySearch: () -> Unit,
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(cityId) {
-        viewModel.loadWeather(cityId)
+    LaunchedEffect(city) {
+        viewModel.loadWeather(city)
     }
 
     val weatherState by viewModel.weatherState.collectAsState()

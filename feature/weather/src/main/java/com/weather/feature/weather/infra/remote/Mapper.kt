@@ -15,8 +15,6 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 internal class Mapper {
-    // ── Mapping ──────────────────────────────────────────────────────────────
-
     fun mapToWeather(
         current: CurrentWeatherDto,
         forecast: ForecastResponseDto
@@ -85,12 +83,6 @@ internal class Mapper {
     }
 
     // ── Formatting helpers ────────────────────────────────────────────────────
-
-    /** Converts a city route ID like "new_york" → "New York" for the API query. */
-    fun cityIdToName(cityId: String): String =
-        cityId.split("_").joinToString(" ") { word ->
-            word.replaceFirstChar { it.uppercaseChar() }
-        }
 
     /** Unix epoch seconds → "Monday, 12 Oct" */
     private fun formatDate(unixSeconds: Long): String {

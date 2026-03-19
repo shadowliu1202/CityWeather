@@ -47,16 +47,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.weather.core.model.City
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherDarkBackground
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
+import kotlinx.serialization.Serializable
+
+
+@Serializable
+data object CityScreen
+
+fun NavGraphBuilder.cityScreen(
+    onNavigateBack: () -> Unit,
+    onCitySelected: (City) -> Unit,
+) {
+    composable<CityScreen> {
+        CityScreen(
+            onCitySelected = onCitySelected,
+            onNavigateBack = onNavigateBack
+        )
+    }
+}
 
 @Composable
-fun CityScreen(
-    onCitySelected: (String) -> Unit,
+private fun CityScreen(
+    onCitySelected: (City) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: CityViewModel = hiltViewModel()
 ) {
@@ -200,7 +219,7 @@ fun CityScreen(
                         items(state.cities) { city ->
                             CityListItem(
                                 city = city,
-                                onClick = { onCitySelected(city.id) }
+                                onClick = { onCitySelected(city) }
                             )
                             HorizontalDivider(
                                 color = WeatherCardBackground,

@@ -3,6 +3,7 @@ package com.weather.feature.weather.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.weather.core.model.City
 import com.weather.feature.weather.domain.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,23 +19,20 @@ class WeatherViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _selectedCityId = MutableStateFlow(
-        savedStateHandle.get<String>("cityId") ?: "taipei"
-    )
-    val selectedCityId: StateFlow<String> = _selectedCityId.asStateFlow()
+    private val _selectedCity = MutableStateFlow(City.Default)
 
     private val _weatherState = MutableStateFlow<WeatherUiState>(WeatherUiState.Loading)
     val weatherState: StateFlow<WeatherUiState> = _weatherState.asStateFlow()
 
     init {
-        loadWeather(_selectedCityId.value)
+        loadWeather(_selectedCity.value)
     }
 
-    fun loadWeather(cityId: String) {
-        _selectedCityId.value = cityId
+    fun loadWeather(city: City) {
+        _selectedCity.value = city
         _weatherState.value = WeatherUiState.Loading
         viewModelScope.launch {
-            weatherRepository.getWeather(cityId)
+            weatherRepository.getWeather(city)
                 .catch { e ->
                     _weatherState.value = WeatherUiState.Error(
                         e.message ?: "Unknown error occurred"

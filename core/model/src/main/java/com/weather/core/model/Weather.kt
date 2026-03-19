@@ -24,3 +24,14 @@ data class DailyForecast(
     val lowCelsius: Int,
     val condition: WeatherCondition
 )
+
+enum class WeatherCondition(val label: String) {
+    SUNNY("Sunny"),
+    CLOUDY("Cloudy"),
+    PARTLY_CLOUDY("Partly Cloudy"),
+    RAINY("Rainy"),
+    STORMY("Stormy"),
+    SNOWY("Snowy"),
+    WINDY("Windy"),
+    FOGGY("Foggy")
+}

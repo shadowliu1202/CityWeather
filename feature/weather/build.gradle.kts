@@ -10,20 +10,20 @@ plugins {
 
 android {
     namespace = "com.weather.feature.weather"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
 
-        // Add OPENWEATHER_API_KEY=your_key_here to your local.properties file
-        val localProps = Properties().apply {
+        val apiKey = Properties().let {
             val f = rootProject.file("local.properties")
-            if (f.exists()) load(f.inputStream())
+            if (f.exists()) it.load(f.inputStream())
+            it.getProperty("OPENWEATHER_API_KEY", "64e08ff2758dc0e6320f6a309cfe2ba5")
         }
         buildConfigField(
             "String",
             "OPENWEATHER_API_KEY",
-            "\"${localProps.getProperty("OPENWEATHER_API_KEY", "")}\""
+            "\"$apiKey\""
         )
     }
 

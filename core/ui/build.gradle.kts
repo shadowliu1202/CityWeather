@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.weather.core.ui"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26

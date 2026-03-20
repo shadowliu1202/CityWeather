@@ -58,7 +58,7 @@ private fun DailyForecastCard(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = forecast.dayOfWeek,
+            text = if (isToday) "Today" else forecast.dayOfWeek,
             color = if (isToday) WeatherTextPrimary else WeatherTextSecondary,
             fontSize = 11.sp,
             fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal

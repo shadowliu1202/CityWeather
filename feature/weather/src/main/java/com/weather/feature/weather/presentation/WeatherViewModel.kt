@@ -15,11 +15,9 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
-    private val _selectedCity = MutableStateFlow(City.Default)
     private val _weatherState = MutableStateFlow<WeatherUiState>(WeatherUiState.Loading)
     val weatherState: StateFlow<WeatherUiState> = _weatherState.asStateFlow()
     fun loadWeather(city: City) {
-        _selectedCity.value = city
         _weatherState.value = WeatherUiState.Loading
         viewModelScope.launch {
             try {

@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -85,16 +85,16 @@ private val CityNavType = object : NavType<City>(isNullableAllowed = false) {
 fun NavGraphBuilder.weatherScreen(
     onNavigateToCitySearch: () -> Unit,
 ) {
-    composable<WeatherScreen>(
+    composable<WeatherRoute>(
         typeMap = mapOf(typeOf<City>() to CityNavType)
     ) { backStackEntry ->
-        val route: WeatherScreen = backStackEntry.toRoute()
+        val route: WeatherRoute = backStackEntry.toRoute()
         WeatherScreen(city = route.city, onNavigateToCitySearch = onNavigateToCitySearch)
     }
 }
 
 @Serializable
-data class WeatherScreen(val city: City = City.Default)
+data class WeatherRoute(val city: City)
 
 @Composable
 private fun WeatherScreen(
@@ -126,7 +126,7 @@ private fun WeatherScreen(
             .fillMaxSize()
             .background(WeatherDarkBackground)
     ) {
-        when (val state = weatherState) {
+        when (weatherState) {
             is WeatherUiState.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
@@ -136,7 +136,7 @@ private fun WeatherScreen(
 
             is WeatherUiState.Error -> {
                 Text(
-                    text = "Error: ${state.message}",
+                    text = "Error: ${weatherState.message}",
                     color = WeatherTextPrimary,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -147,7 +147,7 @@ private fun WeatherScreen(
             is WeatherUiState.Success -> {
                 WeatherContent(
                     city = city,
-                    weather = state.weather,
+                    weather = weatherState.weather,
                     onSearchClick = onNavigateToCitySearch
                 )
             }

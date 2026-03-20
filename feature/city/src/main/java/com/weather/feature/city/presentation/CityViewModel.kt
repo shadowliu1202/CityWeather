@@ -35,7 +35,7 @@ class CityViewModel @Inject constructor(
                 cityRepository.searchCities(query)
             }
         }
-        .catch { e ->
+        .catch { _ ->
             emit(emptyList())
         }
         .map { cityList ->

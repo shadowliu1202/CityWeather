@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.weather.feature.city.presentation.CityScreen
+import com.weather.core.model.City
+import com.weather.feature.city.presentation.CityRoute
 import com.weather.feature.city.presentation.cityScreen
-import com.weather.feature.weather.presentation.WeatherScreen
+import com.weather.feature.weather.presentation.WeatherRoute
 import com.weather.feature.weather.presentation.weatherScreen
 
 @Composable
@@ -15,18 +16,18 @@ fun WeatherNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = WeatherScreen::class
+        startDestination = WeatherRoute(City.Default)
     ) {
         weatherScreen(
             onNavigateToCitySearch = {
-                navController.navigate(CityScreen)
+                navController.navigate(CityRoute)
             }
         )
         cityScreen(
             onNavigateBack = navController::popBackStack,
             onCitySelected = { city ->
-                navController.navigate(WeatherScreen(city)) {
-                    popUpTo(WeatherScreen::class) {
+                navController.navigate(WeatherRoute(city)) {
+                    popUpTo(WeatherRoute::class) {
                         inclusive = true
                     }
                 }

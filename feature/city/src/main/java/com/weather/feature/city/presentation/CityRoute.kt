@@ -22,7 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
@@ -46,7 +46,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.weather.core.model.City
@@ -59,13 +59,13 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data object CityScreen
+data object CityRoute
 
 fun NavGraphBuilder.cityScreen(
     onNavigateBack: () -> Unit,
     onCitySelected: (City) -> Unit,
 ) {
-    composable<CityScreen> {
+    composable<CityRoute> {
         CityScreen(
             onCitySelected = onCitySelected,
             onNavigateBack = onNavigateBack
@@ -106,7 +106,7 @@ private fun CityScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = "Back",
                     tint = WeatherTextPrimary,
                     modifier = Modifier.size(20.dp)
@@ -123,7 +123,6 @@ private fun CityScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Search Bar
         TextField(
             value = searchQuery,
             onValueChange = { viewModel.updateSearchQuery(it) },
@@ -176,7 +175,6 @@ private fun CityScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // City List
         when (val state = citiesState) {
             is CityUiState.Loading -> {
                 Box(

@@ -43,7 +43,7 @@ internal fun HourlySection(weather: Weather) {
         }
         Spacer(modifier = Modifier.height(12.dp))
         HourlyForecastRow(
-            hourlyForecasts = weather.hourlyForecasts,
+            hourlyForecasts = weather.hourlyForecasts.take(8),
             modifier = Modifier.padding(horizontal = 20.dp)
         )
     }

@@ -37,11 +37,8 @@ internal fun HourlyForecastRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp)
     ) {
-        itemsIndexed(hourlyForecasts) { index, forecast ->
-            HourlyForecastCard(
-                forecast = forecast,
-                isNow = index == 0
-            )
+        itemsIndexed(hourlyForecasts) { _, forecast ->
+            HourlyForecastCard(forecast = forecast)
         }
     }
 }
@@ -49,7 +46,6 @@ internal fun HourlyForecastRow(
 @Composable
 private fun HourlyForecastCard(
     forecast: HourlyForecast,
-    isNow: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -59,9 +55,9 @@ private fun HourlyForecastCard(
     ) {
         Text(
             text = forecast.formatTime(),
-            color = if (isNow) WeatherTextPrimary else WeatherTextSecondary,
+            color = WeatherTextSecondary,
             fontSize = 12.sp,
-            fontWeight = if (isNow) FontWeight.SemiBold else FontWeight.Normal
+            fontWeight = FontWeight.Normal
         )
         Spacer(modifier = Modifier.height(8.dp))
         Icon(
@@ -89,8 +85,7 @@ private fun PreviewHourlyForecastCard() {
                 time = LocalTime.now(),
                 temperatureCelsius = 22,
                 condition = WeatherCondition.SUNNY
-            ),
-            isNow = true
+            )
         )
     }
 }

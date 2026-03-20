@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +23,9 @@ import com.weather.core.model.WeatherCondition
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
 import com.weather.core.ui.theme.WeatherTheme
-import com.weather.feature.weather.presentation.util.weatherIcon
-import com.weather.feature.weather.presentation.util.weatherIconTint
+import com.weather.feature.weather.presentation.weatherIcon
+import com.weather.feature.weather.presentation.weatherIconTint
+import java.time.LocalTime
 
 @Composable
 internal fun HourlyForecastRow(
@@ -36,10 +37,10 @@ internal fun HourlyForecastRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp)
     ) {
-        items(hourlyForecasts) { forecast ->
+        itemsIndexed(hourlyForecasts) { index, forecast ->
             HourlyForecastCard(
                 forecast = forecast,
-                isNow = forecast.time == "Now"
+                isNow = index == 0
             )
         }
     }
@@ -57,7 +58,7 @@ private fun HourlyForecastCard(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = forecast.time,
+            text = forecast.formatTime(),
             color = if (isNow) WeatherTextPrimary else WeatherTextSecondary,
             fontSize = 12.sp,
             fontWeight = if (isNow) FontWeight.SemiBold else FontWeight.Normal
@@ -85,7 +86,7 @@ private fun PreviewHourlyForecastCard() {
     WeatherTheme {
         HourlyForecastCard(
             forecast = HourlyForecast(
-                time = "Now",
+                time = LocalTime.now(),
                 temperatureCelsius = 22,
                 condition = WeatherCondition.SUNNY
             ),
@@ -100,12 +101,12 @@ private fun PreviewHourlyForecastRow() {
     WeatherTheme {
         HourlyForecastRow(
             hourlyForecasts = listOf(
-                HourlyForecast("Now", 22, WeatherCondition.SUNNY),
-                HourlyForecast("1 PM", 23, WeatherCondition.SUNNY),
-                HourlyForecast("2 PM", 24, WeatherCondition.PARTLY_CLOUDY),
-                HourlyForecast("3 PM", 24, WeatherCondition.CLOUDY),
-                HourlyForecast("4 PM", 23, WeatherCondition.RAINY),
-                HourlyForecast("5 PM", 22, WeatherCondition.RAINY),
+                HourlyForecast(LocalTime.now(), 22, WeatherCondition.SUNNY),
+                HourlyForecast(LocalTime.now().plusHours(1), 23, WeatherCondition.SUNNY),
+                HourlyForecast(LocalTime.now().plusHours(2), 24, WeatherCondition.PARTLY_CLOUDY),
+                HourlyForecast(LocalTime.now().plusHours(3), 24, WeatherCondition.CLOUDY),
+                HourlyForecast(LocalTime.now().plusHours(4), 23, WeatherCondition.RAINY),
+                HourlyForecast(LocalTime.now().plusHours(5), 22, WeatherCondition.RAINY),
             )
         )
     }

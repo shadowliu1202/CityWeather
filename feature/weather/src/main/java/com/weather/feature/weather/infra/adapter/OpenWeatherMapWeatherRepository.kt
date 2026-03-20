@@ -3,7 +3,6 @@ package com.weather.feature.weather.infra.adapter
 import com.weather.core.model.City
 import com.weather.core.model.Weather
 import com.weather.feature.weather.domain.WeatherRepository
-import com.weather.feature.weather.infra.remote.Mapper
 import com.weather.feature.weather.infra.remote.OpenWeatherMapService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

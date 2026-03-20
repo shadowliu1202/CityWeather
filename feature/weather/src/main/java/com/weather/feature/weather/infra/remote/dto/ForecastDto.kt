@@ -27,5 +27,6 @@ data class ForecastMainDto(
 
 @Serializable
 data class ForecastCityDto(
-    val name: String
+    val name: String,
+    val timezone: Int,
 )

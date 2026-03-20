@@ -9,7 +9,8 @@ data class CurrentWeatherDto(
     val dt: Long,
     val main: CurrentMainDto,
     val weather: List<WeatherDescriptionDto>,
-    val wind: WindDto
+    val wind: WindDto,
+    val timezone: Int,
 )
 
 @Serializable

@@ -23,8 +23,9 @@ import com.weather.core.model.DailyForecast
 import com.weather.core.model.WeatherCondition
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
-import com.weather.feature.weather.presentation.util.weatherIcon
-import com.weather.feature.weather.presentation.util.weatherIconTint
+import com.weather.feature.weather.presentation.weatherIcon
+import com.weather.feature.weather.presentation.weatherIconTint
+import java.time.LocalDate
 
 @Composable
 internal fun WeeklyForecastSection(
@@ -39,7 +40,7 @@ internal fun WeeklyForecastSection(
         items(weeklyForecasts) { forecast ->
             DailyForecastCard(
                 forecast = forecast,
-                isToday = forecast.dayOfWeek == "TODAY"
+                isToday = forecast.isToday
             )
         }
     }
@@ -99,7 +100,7 @@ private fun PreviewDailyForecastCard() {
     Row {
         DailyForecastCard(
             forecast = DailyForecast(
-                dayOfWeek = "etiam",
+                date = LocalDate.now(),
                 highCelsius = 27,
                 lowCelsius = 73,
                 condition = WeatherCondition.SUNNY
@@ -107,7 +108,7 @@ private fun PreviewDailyForecastCard() {
         )
         DailyForecastCard(
             forecast = DailyForecast(
-                dayOfWeek = "etiam",
+                date = LocalDate.now(),
                 highCelsius = 25,
                 lowCelsius = 98,
                 condition = WeatherCondition.SUNNY

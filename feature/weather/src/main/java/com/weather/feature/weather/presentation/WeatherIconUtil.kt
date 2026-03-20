@@ -1,4 +1,4 @@
-package com.weather.feature.weather.presentation.util
+package com.weather.feature.weather.presentation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AcUnit

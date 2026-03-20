@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,20 +40,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.weather.core.model.City
 import com.weather.core.model.CurrentWeather
+import com.weather.core.model.DailyForecast
+import com.weather.core.model.HourlyForecast
 import com.weather.core.model.Weather
+import com.weather.core.model.WeatherCondition
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherCardBackground
 import com.weather.core.ui.theme.WeatherDarkBackground
 import com.weather.core.ui.theme.WeatherTextPrimary
 import com.weather.core.ui.theme.WeatherTextSecondary
+import com.weather.core.ui.theme.WeatherTheme
 import com.weather.feature.weather.presentation.today.HourlySection
 import com.weather.feature.weather.presentation.today.WeatherStatsRow
-import com.weather.feature.weather.presentation.util.weatherIcon
-import com.weather.feature.weather.presentation.util.weatherIconTint
 import com.weather.feature.weather.presentation.weekly.WeeklySection
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -103,6 +108,19 @@ private fun WeatherScreen(
 
     val weatherState by viewModel.weatherState.collectAsState()
 
+    WeatherScreen(
+        city = city,
+        weatherState = weatherState,
+        onNavigateToCitySearch = onNavigateToCitySearch
+    )
+}
+
+@Composable
+private fun WeatherScreen(
+    city: City,
+    weatherState: WeatherUiState,
+    onNavigateToCitySearch: () -> Unit,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -155,7 +173,6 @@ private fun WeatherContent(
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
             item {
-                // Top App Bar
                 WeatherTopBar(
                     cityName = city.name,
                     date = weather.current.date.formatDate(),
@@ -289,3 +306,41 @@ private fun MainWeatherDisplay(weather: CurrentWeather) {
     }
 }
 
+@Preview
+@Composable
+private fun WeatherContentPreview() {
+    WeatherTheme {
+        WeatherContent(
+            weather = SampleWeather,
+            onSearchClick = {},
+            city = City.Default
+        )
+    }
+}
+
+private val SampleWeather = Weather(
+    current = CurrentWeather(
+        cityName = "Taipei",
+        date = Instant.now(),
+        temperatureCelsius = 25,
+        condition = WeatherCondition.SUNNY,
+        feelsLikeCelsius = 27,
+        humidityPercent = 60,
+        windSpeedKmh = 12
+    ),
+    hourlyForecasts = List(24) { i ->
+        HourlyForecast(
+            time = LocalTime.of(i, 0),
+            temperatureCelsius = 20 + (i % 10),
+            condition = if (i % 3 == 0) WeatherCondition.CLOUDY else WeatherCondition.SUNNY
+        )
+    },
+    weeklyForecasts = List(7) { i ->
+        DailyForecast(
+            date = LocalDate.now().plusDays(i.toLong()),
+            highCelsius = 28,
+            lowCelsius = 22,
+            condition = if (i % 2 == 0) WeatherCondition.SUNNY else WeatherCondition.RAINY
+        )
+    }
+)

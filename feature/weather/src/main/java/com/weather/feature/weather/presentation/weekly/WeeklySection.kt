@@ -22,6 +22,7 @@ import com.weather.core.model.WeatherCondition
 import com.weather.core.ui.theme.WeatherAccentBlue
 import com.weather.core.ui.theme.WeatherTextPrimary
 import java.time.Instant
+import java.time.LocalDate
 
 @Composable
 internal fun WeeklySection(weather: Weather) {
@@ -71,10 +72,10 @@ private fun PreviewWeeklySection() {
             hourlyForecasts = listOf(),
             weeklyForecasts = listOf(
                 DailyForecast(
-                    dayOfWeek = "libris", highCelsius = 5878, lowCelsius = 9948, condition = WeatherCondition.SUNNY
+                    date = LocalDate.now(), highCelsius = 5878, lowCelsius = 9948, condition = WeatherCondition.SUNNY
                 ),
                 DailyForecast(
-                    dayOfWeek = "libris", highCelsius = 5878, lowCelsius = 9948, condition = WeatherCondition.SUNNY
+                    date = LocalDate.now(), highCelsius = 5878, lowCelsius = 9948, condition = WeatherCondition.SUNNY
                 )
             )
         )
